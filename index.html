@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .cuadro {
+            display: inline-block;
+            vertical-align: top;
+            width: 300px;
+            text-align: center;
+            -webkit-box-shadow: 2px 2px 5px 0px rgba(50, 50, 50, 0.75);
+            -moz-box-shadow: 2px 2px 5px 0px rgba(50, 50, 50, 0.75);
+            box-shadow: 2px 2px 5px 0px rgba(50, 50, 50, 0.75);
+            padding: 10px;
+            margin: 10px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="b">
+    <input type="button" id="buscar" value="Buscar">
+
+    <div id="imagenes"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+
+    <script>
+        $(document).on("ready",main);
+        function main(){
+            $("#buscar").on("click", function(){
+                var texto = "";
+                var tag = $("#b").val();
+                $("#imagenes").text("Cargando...");
+                $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?tags=" + tag +"&tagmode=any&format=json&jsoncallback=?", function(datos){
+                    $.each(datos.items, function(i, item){
+                        texto += "<div class='cuadro'>";
+                        texto += "<h2>"+item.title+"</h2>";
+                        texto += "<div>"+item.description+"</div>";
+                        texto += "</div>";
+                    });
+                    $("#imagenes").html(texto);
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>
